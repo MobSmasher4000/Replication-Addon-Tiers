@@ -36,6 +36,7 @@ import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.joml.Matrix4f;
 import org.mob.replication_addon_tiers.Config;
+import org.mob.replication_addon_tiers.ReplicationAddonTiers;
 import org.mob.replication_addon_tiers.block.ReplicatorAdvancedBlock;
 import org.mob.replication_addon_tiers.block.custom.ReplicatorAdvancedBlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier1BlockEntity;
@@ -91,10 +92,12 @@ public class ClientEvents {
             }
         }).subscribe();
 
+        EventManager.mod(EntityRenderersEvent.RegisterRenderers.class).process(event -> {
+            event.registerBlockEntityRenderer((BlockEntityType<? extends ReplicatorAdvancedBlockEntity>)ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), p_173571_ -> new ReplicatorAdvancedRenderer());
+        }).subscribe();
+
         EventManager.mod(ModelEvent.BakingCompleted.class).process((event) -> {
-            ReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(Replication.MOD_ID, "block/replicator_plate"), event.getModelBakery());
-
-
+            ReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(ReplicationAddonTiers.MOD_ID, "block/replicator_plate"), event.getModelBakery());
         }).subscribe();
     }
 
@@ -111,7 +114,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier2BlockEntity>) ModRegistry.MATTER_TANK_TIER_2_BE.get(), MatterTankTier2Renderer::new);
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier3BlockEntity>) ModRegistry.MATTER_TANK_TIER_3_BE.get(), MatterTankTier3Renderer::new);
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier4BlockEntity>) ModRegistry.MATTER_TANK_TIER_4_BE.get(), MatterTankTier4Renderer::new);
-        event.registerBlockEntityRenderer(ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), (context) -> new ReplicatorAdvancedRenderer());
+//        event.registerBlockEntityRenderer(ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), (context) -> new ReplicatorAdvancedRenderer());
     }
 
     public static void blockOverlayEvent(RenderHighlightEvent.Block event) {
