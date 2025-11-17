@@ -92,20 +92,15 @@ public class ClientEvents {
             }
         }).subscribe();
 
-        EventManager.mod(EntityRenderersEvent.RegisterRenderers.class).process(event -> {
-            event.registerBlockEntityRenderer((BlockEntityType<? extends ReplicatorAdvancedBlockEntity>)ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), p_173571_ -> new ReplicatorAdvancedRenderer());
-        }).subscribe();
-
         EventManager.mod(ModelEvent.BakingCompleted.class).process((event) -> {
             ReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(ReplicationAddonTiers.MOD_ID, "block/replicator_plate"), event.getModelBakery());
         }).subscribe();
     }
 
-    private static BakedModel bakeModel(ResourceLocation model, ModelBakery modelBakery) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(model, "standalone");
+    private static BakedModel bakeModel(ResourceLocation model, ModelBakery modelBakery){
+        var modelResourceLocation = new ModelResourceLocation(model, "standalone");
         UnbakedModel unbakedModel = modelBakery.getModel(model);
-        Objects.requireNonNull(modelBakery);
-        ModelBaker baker = new ModelBakery.ModelBakerImpl(modelBakery, (modelLoc, material) -> material.sprite(), modelResourceLocation);
+        ModelBaker baker = modelBakery.new ModelBakerImpl((modelLoc, material) -> material.sprite(), modelResourceLocation);
         return unbakedModel.bake(baker, Material::sprite, new SimpleModelState(Transformation.identity()));
     }
 
@@ -114,7 +109,7 @@ public class ClientEvents {
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier2BlockEntity>) ModRegistry.MATTER_TANK_TIER_2_BE.get(), MatterTankTier2Renderer::new);
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier3BlockEntity>) ModRegistry.MATTER_TANK_TIER_3_BE.get(), MatterTankTier3Renderer::new);
         event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier4BlockEntity>) ModRegistry.MATTER_TANK_TIER_4_BE.get(), MatterTankTier4Renderer::new);
-//        event.registerBlockEntityRenderer(ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), (context) -> new ReplicatorAdvancedRenderer());
+        event.registerBlockEntityRenderer(ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), (context) -> new ReplicatorAdvancedRenderer());
     }
 
     public static void blockOverlayEvent(RenderHighlightEvent.Block event) {
@@ -165,5 +160,16 @@ public class ClientEvents {
             bufferIn.addVertex(matrix4f, (float)(p_230013_18_ + xIn), (float)(p_230013_20_ + yIn), (float)(p_230013_22_ + zIn)).setColor(red, green, blue, alpha).setNormal(posestack$pose, f, f1, f2);
         });
     }
+
+    @SubscribeEvent
+    public static void onModelBake(ModelEvent.ModifyBakingResult event) {
+
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath("replication_addon_tiers", "block/replicator_plate");
+
+        BakedModel plate = event.getModels().get(id);
+
+        ReplicatorAdvancedRenderer.PLATE = plate;
+    }
+
 
 }
