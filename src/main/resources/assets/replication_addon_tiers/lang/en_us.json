@@ -3,6 +3,7 @@
   "block.replication_addon_tiers.matter_tank_tier_1": "Matter Tank Tier 1",
   "block.replication_addon_tiers.matter_tank_tier_2": "Matter Tank Tier 2",
   "block.replication_addon_tiers.matter_tank_tier_3": "Matter Tank Tier 3",
-  "block.replication_addon_tiers.matter_tank_tier_4": "Matter Tank Tier 4"
+  "block.replication_addon_tiers.matter_tank_tier_4": "Matter Tank Tier 4",
+  "block.replication_addon_tiers.replicator_advanced": "Advanced Replicator"
 
 }

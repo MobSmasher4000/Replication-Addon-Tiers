@@ -23,6 +23,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModRegistry.MATTER_TANK_TIER_2.get())
                 .add(ModRegistry.MATTER_TANK_TIER_3.get())
                 .add(ModRegistry.MATTER_TANK_TIER_4.get())
+                .add(ModRegistry.REPLICATOR_ADVANCED_BLOCK.get())
         ;
     }
 }

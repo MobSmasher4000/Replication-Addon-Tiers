@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/block",
+  "loader": "neoforge:composite",
+  "children": {
+    "base": {
+      "parent": "replication_addon_tiers:block/replicator_advanced"
+    },
+    "plate": {
+      "parent": "replication_addon_tiers:block/replicator_plate"
+    }
+  }
+}

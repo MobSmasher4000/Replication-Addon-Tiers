@@ -14,12 +14,15 @@ public class Config {
     private static final ModConfigSpec.IntValue TANK_TIER_3 = BUILDER.comment("Multiplier for Matter Tank Tier 3").defineInRange("tankTier3", 8, 3, 32);
     private static final ModConfigSpec.IntValue TANK_TIER_4 = BUILDER.comment("Multiplier for Matter Tank Tier 4").defineInRange("tankTier4", 16, 4, 32);
 
+    private static final ModConfigSpec.IntValue REPLICATOR_ADVANCED = BUILDER.comment(" % faster than normal Replicator").defineInRange("replicatorAdvanced", 60 , 1, 100);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 
     public static int tankTier1;
     public static int tankTier2;
     public static int tankTier3;
     public static int tankTier4;
+    public static int replicatorAdvanced;
 
 
     @SubscribeEvent
@@ -28,5 +31,6 @@ public class Config {
         tankTier2 = TANK_TIER_2.get();
         tankTier3 = TANK_TIER_3.get();
         tankTier4 = TANK_TIER_4.get();
+        replicatorAdvanced = REPLICATOR_ADVANCED.get();
     }
 }

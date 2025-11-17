@@ -8,10 +8,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.mob.replication_addon_tiers.ReplicationAddonTiers;
-import org.mob.replication_addon_tiers.block.MatterTankTier1Block;
-import org.mob.replication_addon_tiers.block.MatterTankTier2Block;
-import org.mob.replication_addon_tiers.block.MatterTankTier3Block;
-import org.mob.replication_addon_tiers.block.MatterTankTier4Block;
+import org.mob.replication_addon_tiers.block.*;
+import org.mob.replication_addon_tiers.block.custom.ReplicatorAdvancedBlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier1BlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier2BlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier3BlockEntity;
@@ -31,6 +29,9 @@ public class ModRegistry {
 
     public static final DeferredBlock<MatterTankTier4Block> MATTER_TANK_TIER_4 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_4", MatterTankTier4Block::new);
     public static final DeferredItem<BlockItem> MATTER_TANK_TIER_4_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_4);
+
+    public static final DeferredBlock<ReplicatorAdvancedBlock> REPLICATOR_ADVANCED_BLOCK = ReplicationAddonTiers.BLOCKS.register("replicator_advanced", ReplicatorAdvancedBlock::new);
+    public static final DeferredItem<BlockItem> REPLICATOR_ADVANCED_BLOCK_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(REPLICATOR_ADVANCED_BLOCK);
 
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MatterTankTier1BlockEntity>> MATTER_TANK_TIER_1_BE = BLOCK_ENTITIES.register("matter_tank_tier_1",
@@ -65,6 +66,15 @@ public class ModRegistry {
                 var type = BlockEntityType.Builder.of(
                         (pos, state) -> new MatterTankTier4BlockEntity(MATTER_TANK_TIER_4.get(), null, pos, state),
                         MATTER_TANK_TIER_4.get()
+                ).build(null);
+                return type;
+            });
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReplicatorAdvancedBlockEntity>> REPLICATOR_ADVANCED_BLOCK_BE = BLOCK_ENTITIES.register("replicator_advanced",
+            () -> {
+                var type = BlockEntityType.Builder.of(
+                        (pos, state) -> new ReplicatorAdvancedBlockEntity(REPLICATOR_ADVANCED_BLOCK.get(), null, pos, state),
+                        REPLICATOR_ADVANCED_BLOCK.get()
                 ).build(null);
                 return type;
             });

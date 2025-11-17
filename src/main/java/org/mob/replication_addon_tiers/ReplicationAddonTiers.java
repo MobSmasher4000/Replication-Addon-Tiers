@@ -6,12 +6,19 @@ import com.buuz135.replication.ReplicationRegistry;
 import com.buuz135.replication.api.IMatterType;
 import com.buuz135.replication.api.MatterType;
 import com.buuz135.replication.api.matter_fluid.MatterStack;
+import com.buuz135.replication.block.tile.MatterPipeBlockEntity;
+import com.buuz135.replication.block.tile.ReplicationMachine;
+import com.hrznstudio.titanium.block_network.INetworkDirectionalConnection;
+import com.hrznstudio.titanium.block_network.NetworkManager;
+import com.hrznstudio.titanium.event.handler.EventManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -43,6 +50,7 @@ public class ReplicationAddonTiers {
         output.accept(ModRegistry.MATTER_TANK_TIER_2.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_3.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_4.get());
+        output.accept(ModRegistry.REPLICATOR_ADVANCED_BLOCK.get());
 
         for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
             if (!value.equals(MatterType.EMPTY)) {
@@ -109,6 +117,19 @@ public class ReplicationAddonTiers {
         modEventBus.addListener(ClientEvents::registerRenderers);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        EventManager.mod(RegisterCapabilitiesEvent.class).process((event) -> {
+            event.registerBlock(Capabilities.EnergyStorage.BLOCK, (level, blockPos, blockState, blockEntity, direction) -> {
+                Block patt0$temp = blockState.getBlock();
+                if (patt0$temp instanceof INetworkDirectionalConnection connection) {
+                    if (connection.canConnect(level, blockPos, blockState, direction) && blockEntity instanceof ReplicationMachine<?> machine) {
+                        return machine.getEnergyStorage();
+                    }
+                }
+
+                return null;
+            }, new Block[]{ModRegistry.REPLICATOR_ADVANCED_BLOCK.get()});
+        }).subscribe();
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

@@ -1,14 +1,24 @@
 package org.mob.replication_addon_tiers.datagen;
 
 import com.buuz135.replication.ReplicationRegistry;
+import com.hrznstudio.titanium.block.BasicTileBlock;
+import com.hrznstudio.titanium.recipe.generator.TitaniumShapedRecipeBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+import static org.mob.replication_addon_tiers.ReplicationAddonTiers.MOD_ID;
 
 
 public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
@@ -58,6 +68,16 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_tank", has(ReplicationRegistry.Blocks.MATTER_TANK))
                 .save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.REPLICATOR_ADVANCED_BLOCK.get())
+                .pattern("IP ")
+                .pattern("IRM")
+                .pattern("III")
+                .define('P', Items.PISTON)
+                .define('I', (ItemLike)ReplicationRegistry.Items.REPLICA_INGOT.get())
+                .define('R', ReplicationRegistry.Blocks.REPLICATOR)
+                .define('M', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_replicator", has(ReplicationRegistry.Blocks.REPLICATOR))
+                .save(recipeOutput);
 
     }
 
