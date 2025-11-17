@@ -101,6 +101,7 @@ public class ClientEvents {
         var modelResourceLocation = new ModelResourceLocation(model, "standalone");
         UnbakedModel unbakedModel = modelBakery.getModel(model);
         ModelBaker baker = modelBakery.new ModelBakerImpl((modelLoc, material) -> material.sprite(), modelResourceLocation);
+        System.out.println("Loaded model = " + unbakedModel);
         return unbakedModel.bake(baker, Material::sprite, new SimpleModelState(Transformation.identity()));
     }
 

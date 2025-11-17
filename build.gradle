@@ -37,8 +37,6 @@ neoForge {
 
     validateAccessTransformers = true
 
-    minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-
     runs {
         client {
             client()

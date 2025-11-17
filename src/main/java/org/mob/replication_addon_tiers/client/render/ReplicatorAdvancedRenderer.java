@@ -29,125 +29,152 @@ import org.mob.replication_addon_tiers.block.custom.ReplicatorAdvancedBlockEntit
 
 public class ReplicatorAdvancedRenderer implements BlockEntityRenderer<ReplicatorAdvancedBlockEntity> {
     private static RenderType AREA_TYPE = createRenderType();
-    public static BakedModel PLATE = null;
 
     public static RenderType createRenderType() {
-        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader)).setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
-            RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        }, () -> {
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
-        })).createCompositeState(true);
+        RenderType.CompositeState state = RenderType.CompositeState.builder()
+                .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorShader))
+                .setTransparencyState(new RenderStateShard.TransparencyStateShard("translucent_transparency", () -> {
+                    RenderSystem.enableBlend();
+                    RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                }, () -> {
+                    RenderSystem.disableBlend();
+                    RenderSystem.defaultBlendFunc();
+                })).createCompositeState(true);
         return RenderType.create("working_area_render", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true, state);
     }
 
-    public void render(ReplicatorAdvancedBlockEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLightIn, int combinedOverlayIn) {
-        Direction facing = (Direction)entity.getBlockState().getValue(RotatableBlock.FACING_HORIZONTAL);
+    public static BakedModel PLATE = null;
+
+    @Override
+    public void render(ReplicatorAdvancedBlockEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource,  int combinedLightIn, int combinedOverlayIn) {
+        var facing = entity.getBlockState().getValue(RotatableBlock.FACING_HORIZONTAL);
         if (facing == Direction.EAST) {
-            poseStack.translate(1.0F, 0.0F, 0.0F);
-            poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-        } else if (facing == Direction.SOUTH) {
-            poseStack.translate(1.0F, 0.0F, 1.0F);
-            poseStack.mulPose(Axis.YP.rotationDegrees(-180.0F));
-        } else if (facing == Direction.WEST) {
-            poseStack.translate(0.0F, 0.0F, 1.0F);
-            poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+            poseStack.translate(1,0,0);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-90));
         }
-
+        else if (facing == Direction.SOUTH) {
+            poseStack.translate(1,0,1);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-180));
+        }
+        else if (facing == Direction.WEST) {
+            poseStack.translate(0,0,1);
+            poseStack.mulPose(Axis.YP.rotationDegrees(90));
+        }
         poseStack.pushPose();
-        float[] color = new float[]{1.0F, 1.0F, 1.0F, 0.0F};
-        if (!entity.getCraftingStack().isEmpty() && entity.getAction() == 0) {
-            MatterCompound matterCompound = ClientReplicationCalculation.getMatterCompound(entity.getCraftingStack());
+        var color = new float[]{1f, 1f, 1f, 0f};
+        if (!entity.getCraftingStack().isEmpty() && entity.getAction() == 0){
+            var matterCompound = ClientReplicationCalculation.getMatterCompound(entity.getCraftingStack());
             if (matterCompound != null) {
-                double total = (double)0.0F;
-
-                for(MatterValue matterValue : matterCompound.getValues().values()) {
+                var total = 0D;
+                for (MatterValue matterValue : matterCompound.getValues().values()) {
                     total += matterValue.getAmount();
                 }
-
-                double currentProgress = (double)((float)entity.getProgress() / (float)entity.getMaxProgress()) * 1.4;
-                int progressTotal = 0;
-
-                for(MatterValue matterValue : matterCompound.getValues().values()) {
-                    if (((double)progressTotal + matterValue.getAmount()) / total >= currentProgress) {
-                        color = (float[])matterValue.getMatter().getColor().get();
+                var currentProgress = entity.getProgress() / (float) entity.getMaxProgress() * 1.4;
+                var progressTotal = 0;
+                for (MatterValue matterValue : matterCompound.getValues().values()) {
+                    if ((progressTotal + matterValue.getAmount()) / (double) total >= currentProgress) {
+                        color = matterValue.getMatter().getColor().get();
                         break;
                     }
-
-                    progressTotal = (int)((double)progressTotal + matterValue.getAmount());
+                    progressTotal += matterValue.getAmount();
                 }
             }
         }
+        renderPlane(poseStack, multiBufferSource, Block.box( 2,0,2,14,1,12).bounds(), 0,0.15,0, color[0], color[1], color[2], color[3] == 0 ? 0 : 0.75f);
+        renderFaces(poseStack, multiBufferSource, Block.box( 4,0,2,12,4,12).bounds(), 0,-0.2,0, 1,1,1, 0.005f);
 
-        this.renderPlane(poseStack, multiBufferSource, Block.box((double)2.0F, (double)0.0F, (double)2.0F, (double)14.0F, (double)1.0F, (double)12.0F).bounds(), (double)0.0F, 0.15, (double)0.0F, color[0], color[1], color[2], color[3] == 0.0F ? 0.0F : 0.75F);
-        this.renderFaces(poseStack, multiBufferSource, Block.box((double)4.0F, (double)0.0F, (double)2.0F, (double)12.0F, (double)4.0F, (double)12.0F).bounds(), (double)0.0F, -0.2, (double)0.0F, 1.0F, 1.0F, 1.0F, 0.005F);
-        poseStack.translate(0.0F, -0.563F, 0.0F);
-        float progress = ((float)entity.getProgress() + partialTicks / 100.0F) / (float)entity.getMaxProgress();
-        poseStack.translate(0.0F, 0.563F * progress - 0.001F, 0.0F);
-        Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(), multiBufferSource.getBuffer(RenderType.solid()), (BlockState)null, PLATE, 255.0F, 255.0F, 255.0F, combinedLightIn, combinedOverlayIn);
-        poseStack.translate(0.5F, 0.56F, 0.45F);
-        float scale = 0.4F;
-        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(entity.getCraftingStack(), Minecraft.getInstance().level, (LivingEntity)null, 0);
-        if (model.isGui3d()) {
-            scale = 0.75F;
+
+        poseStack.translate(0 , -ReplicatorAdvancedBlockEntity.LOWER_PROGRESS,0);
+
+        var progress = (entity.getProgress() + partialTicks / 100f) / (float) entity.getMaxProgress();
+        //progress = 0;
+
+        poseStack.translate(0, ReplicatorAdvancedBlockEntity.LOWER_PROGRESS * progress - 0.001f, 0);
+        Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),  multiBufferSource.getBuffer(RenderType.solid()), null, PLATE, 255, 255, 255, combinedLightIn ,combinedOverlayIn);
+
+        poseStack.translate(0.5f, 0.56f, 0.45f);
+        var scale = 0.4f;
+        var model = Minecraft.getInstance().getItemRenderer().getModel(entity.getCraftingStack(), Minecraft.getInstance().level, null, 0);
+
+        if (model.isGui3d()){
+            scale = 0.75f;
         }
+        poseStack.scale(scale, scale,scale);
 
-        poseStack.scale(scale, scale, scale);
-        if (entity.getAction() == 0 && !entity.isCurrentTaskAFailure()) {
+        if (entity.getAction() == 0 && !entity.isCurrentTaskAFailure())
             Minecraft.getInstance().getItemRenderer().renderStatic(entity.getCraftingStack(), ItemDisplayContext.FIXED, combinedLightIn, combinedOverlayIn, poseStack, multiBufferSource, entity.getLevel(), 0);
-        }
-
         poseStack.popPose();
+
     }
 
     private void renderPlane(PoseStack stack, MultiBufferSource renderTypeBuffer, AABB pos, double x, double y, double z, float red, float green, float blue, float alpha) {
-        float x1 = (float)(pos.minX + x);
-        float x2 = (float)(pos.maxX + x);
-        float y1 = (float)(pos.minY + y);
-        float y2 = (float)(pos.maxY + y);
-        float z1 = (float)(pos.minZ + z);
-        float z2 = (float)(pos.maxZ + z);
+
+        float x1 = (float) (pos.minX + x);
+        float x2 = (float) (pos.maxX + x);
+        float y1 = (float) (pos.minY + y);
+        float y2 = (float) (pos.maxY + y);
+        float z1 = (float) (pos.minZ + z);
+        float z2 = (float) (pos.maxZ + z);
+
         Matrix4f matrix = stack.last().pose();
-        VertexConsumer buffer = renderTypeBuffer.getBuffer(AREA_TYPE);
+        VertexConsumer buffer;
+
+        buffer = renderTypeBuffer.getBuffer(AREA_TYPE);
+
+
+
         buffer.addVertex(matrix, x1, y2, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z1).setColor(red, green, blue, alpha);
+
     }
 
     private void renderFaces(PoseStack stack, MultiBufferSource renderTypeBuffer, AABB pos, double x, double y, double z, float red, float green, float blue, float alpha) {
-        float x1 = (float)(pos.minX + x);
-        float x2 = (float)(pos.maxX + x);
-        float y1 = (float)(pos.minY + y);
-        float y2 = (float)(pos.maxY + y);
-        float z1 = (float)(pos.minZ + z);
-        float z2 = (float)(pos.maxZ + z);
+
+        float x1 = (float) (pos.minX + x);
+        float x2 = (float) (pos.maxX + x);
+        float y1 = (float) (pos.minY + y);
+        float y2 = (float) (pos.maxY + y);
+        float z1 = (float) (pos.minZ + z);
+        float z2 = (float) (pos.maxZ + z);
+
         Matrix4f matrix = stack.last().pose();
-        VertexConsumer buffer = renderTypeBuffer.getBuffer(AREA_TYPE);
+        VertexConsumer buffer;
+
+        buffer = renderTypeBuffer.getBuffer(AREA_TYPE);
+
         buffer.addVertex(matrix, x1, y1, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y1, z1).setColor(red, green, blue, alpha);
+
         buffer.addVertex(matrix, x1, y1, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y1, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z2).setColor(red, green, blue, alpha);
+
+
         buffer.addVertex(matrix, x1, y1, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y1, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y1, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y1, z2).setColor(red, green, blue, alpha);
+
         buffer.addVertex(matrix, x1, y2, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z1).setColor(red, green, blue, alpha);
+
+
         buffer.addVertex(matrix, x1, y1, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y1, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x1, y2, z1).setColor(red, green, blue, alpha);
+
         buffer.addVertex(matrix, x2, y1, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z1).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y2, z2).setColor(red, green, blue, alpha);
         buffer.addVertex(matrix, x2, y1, z2).setColor(red, green, blue, alpha);
+
     }
 }
