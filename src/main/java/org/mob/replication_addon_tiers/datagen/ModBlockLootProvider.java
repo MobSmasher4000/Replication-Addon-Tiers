@@ -22,7 +22,7 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
         dropSelf(ModRegistry.MATTER_TANK_TIER_2.get());
         dropSelf(ModRegistry.MATTER_TANK_TIER_3.get());
         dropSelf(ModRegistry.MATTER_TANK_TIER_4.get());
-        dropSelf(ModRegistry.REPLICATOR_ADVANCED_BLOCK.get());
+        dropSelf(ModRegistry.ADVANCED_REPLICATOR.get());
 
     }
 

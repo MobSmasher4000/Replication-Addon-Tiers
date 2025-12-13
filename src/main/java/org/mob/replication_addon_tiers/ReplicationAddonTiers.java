@@ -6,24 +6,21 @@ import com.buuz135.replication.ReplicationRegistry;
 import com.buuz135.replication.api.IMatterType;
 import com.buuz135.replication.api.MatterType;
 import com.buuz135.replication.api.matter_fluid.MatterStack;
-import com.buuz135.replication.block.tile.MatterPipeBlockEntity;
 import com.buuz135.replication.block.tile.ReplicationMachine;
 import com.hrznstudio.titanium.block_network.INetworkDirectionalConnection;
-import com.hrznstudio.titanium.block_network.NetworkManager;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -31,6 +28,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.mob.replication_addon_tiers.client.ClientEvents;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 import org.slf4j.Logger;
+
+import static net.neoforged.fml.loading.FMLEnvironment.dist;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(ReplicationAddonTiers.MOD_ID)
@@ -50,7 +49,7 @@ public class ReplicationAddonTiers {
         output.accept(ModRegistry.MATTER_TANK_TIER_2.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_3.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_4.get());
-        output.accept(ModRegistry.REPLICATOR_ADVANCED_BLOCK.get());
+        output.accept(ModRegistry.ADVANCED_REPLICATOR.get());
 
         for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
             if (!value.equals(MatterType.EMPTY)) {
@@ -111,10 +110,7 @@ public class ReplicationAddonTiers {
         CREATIVE_MODE_TABS.register(modEventBus);
         ModRegistry.BLOCK_ENTITIES.register(modEventBus);
 
-
-        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::registerCapabilities);
-        modEventBus.addListener(ClientEvents::registerRenderers);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
@@ -128,12 +124,11 @@ public class ReplicationAddonTiers {
                 }
 
                 return null;
-            }, new Block[]{ModRegistry.REPLICATOR_ADVANCED_BLOCK.get()});
+            }, new Block[]{ModRegistry.ADVANCED_REPLICATOR.get()});
         }).subscribe();
-    }
-
-    private void clientSetup(FMLClientSetupEvent event) {
-        ClientEvents.init();
+        if (dist == Dist.CLIENT) {
+            ClientEvents.init();
+        }
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {

@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "replication_addon_tiers:block/replicator_advanced"
+        "model": "replication_addon_tiers:block/advanced_replicator"
       },
       "when": {
         "subfacing": "north"
@@ -28,7 +28,7 @@
     },
     {
       "apply": {
-        "model": "replication_addon_tiers:block/replicator_advanced",
+        "model": "replication_addon_tiers:block/advanced_replicator",
         "y": 180
       },
       "when": {
@@ -57,7 +57,7 @@
     },
     {
       "apply": {
-        "model": "replication_addon_tiers:block/replicator_advanced",
+        "model": "replication_addon_tiers:block/advanced_replicator",
         "y": 90
       },
       "when": {
@@ -86,7 +86,7 @@
     },
     {
       "apply": {
-        "model": "replication_addon_tiers:block/replicator_advanced",
+        "model": "replication_addon_tiers:block/advanced_replicator",
         "y": 270
       },
       "when": {

@@ -3,9 +3,6 @@ package org.mob.replication_addon_tiers.client;
 import com.buuz135.replication.Replication;
 import com.buuz135.replication.ReplicationAttachments;
 import com.buuz135.replication.api.matter_fluid.MatterStack;
-import com.buuz135.replication.block.ReplicatorBlock;
-import com.buuz135.replication.block.tile.ReplicatorBlockEntity;
-import com.buuz135.replication.client.render.*;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,16 +16,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
@@ -36,9 +29,8 @@ import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.joml.Matrix4f;
 import org.mob.replication_addon_tiers.Config;
-import org.mob.replication_addon_tiers.ReplicationAddonTiers;
-import org.mob.replication_addon_tiers.block.ReplicatorAdvancedBlock;
-import org.mob.replication_addon_tiers.block.custom.ReplicatorAdvancedBlockEntity;
+import org.mob.replication_addon_tiers.block.AdvancedReplicatorBlock;
+import org.mob.replication_addon_tiers.block.custom.AdvancedReplicatorBlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier1BlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier2BlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier3BlockEntity;
@@ -47,7 +39,6 @@ import org.mob.replication_addon_tiers.client.render.*;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 public class ClientEvents {
 
@@ -92,58 +83,17 @@ public class ClientEvents {
             }
         }).subscribe();
 
-        EventManager.mod(ModelEvent.BakingCompleted.class).process((event) -> {
-            ReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(ReplicationAddonTiers.MOD_ID, "block/replicator_plate"), event.getModelBakery());
+        EventManager.mod(EntityRenderersEvent.RegisterRenderers.class).process(event -> {
+            event.registerBlockEntityRenderer((BlockEntityType<? extends AdvancedReplicatorBlockEntity>)ModRegistry.ADVANCED_REPLICATOR_BE.get(), p_173571_ -> new AdvancedReplicatorRenderer());
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier1BlockEntity>) ModRegistry.MATTER_TANK_TIER_1_BE.get(), MatterTankTier1Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier2BlockEntity>) ModRegistry.MATTER_TANK_TIER_2_BE.get(), MatterTankTier2Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier3BlockEntity>) ModRegistry.MATTER_TANK_TIER_3_BE.get(), MatterTankTier3Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier4BlockEntity>) ModRegistry.MATTER_TANK_TIER_4_BE.get(), MatterTankTier4Renderer::new);
         }).subscribe();
-    }
-
-    private static BakedModel bakeModel(ResourceLocation model, ModelBakery modelBakery){
-        var modelResourceLocation = new ModelResourceLocation(model, "standalone");
-        UnbakedModel unbakedModel = modelBakery.getModel(model);
-        ModelBaker baker = modelBakery.new ModelBakerImpl((modelLoc, material) -> material.sprite(), modelResourceLocation);
-        System.out.println("Loaded model = " + unbakedModel);
-        return unbakedModel.bake(baker, Material::sprite, new SimpleModelState(Transformation.identity()));
-    }
-
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier1BlockEntity>) ModRegistry.MATTER_TANK_TIER_1_BE.get(), MatterTankTier1Renderer::new);
-        event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier2BlockEntity>) ModRegistry.MATTER_TANK_TIER_2_BE.get(), MatterTankTier2Renderer::new);
-        event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier3BlockEntity>) ModRegistry.MATTER_TANK_TIER_3_BE.get(), MatterTankTier3Renderer::new);
-        event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier4BlockEntity>) ModRegistry.MATTER_TANK_TIER_4_BE.get(), MatterTankTier4Renderer::new);
-        event.registerBlockEntityRenderer(ModRegistry.REPLICATOR_ADVANCED_BLOCK_BE.get(), (context) -> new ReplicatorAdvancedRenderer());
-    }
-
-    public static void blockOverlayEvent(RenderHighlightEvent.Block event) {
-        if (event.getTarget() != null) {
-            BlockHitResult traceResult = event.getTarget();
-            BlockState og = Minecraft.getInstance().level.getBlockState(traceResult.getBlockPos());
-            Block var5 = og.getBlock();
-            if (var5 instanceof ReplicatorAdvancedBlock) {
-                ReplicatorAdvancedBlock replicatorAdvancedBlock = (ReplicatorAdvancedBlock) var5;
-                BlockEntity var18 = Minecraft.getInstance().level.getBlockEntity(traceResult.getBlockPos());
-                if (var18 instanceof ReplicatorAdvancedBlockEntity) {
-                    ReplicatorAdvancedBlockEntity replicatorAdvancedBlockEntity = (ReplicatorAdvancedBlockEntity) var18;
-                    VoxelShape body = (VoxelShape)replicatorAdvancedBlock.getShapePlate(og).getFirst();
-                    VoxelShape plate = (VoxelShape)replicatorAdvancedBlock.getShapePlate(og).getSecond();
-                    BlockPos blockpos = event.getTarget().getBlockPos();
-                    event.setCanceled(true);
-                    PoseStack stack = new PoseStack();
-                    stack.pushPose();
-                    Camera info = event.getCamera();
-                    double d0 = info.getPosition().x();
-                    double d1 = info.getPosition().y();
-                    double d2 = info.getPosition().z();
-                    VertexConsumer builder = event.getMultiBufferSource().getBuffer(RenderType.LINES);
-                    drawShape(stack, builder, body, (double)blockpos.getX() - d0, (double)blockpos.getY() - d1, (double)blockpos.getZ() - d2, 0.0F, 0.0F, 0.0F, 0.4F);
-                    stack.translate(0.0F, -0.563F, 0.0F);
-                    float progress = (float)replicatorAdvancedBlockEntity.getProgress() / (float)replicatorAdvancedBlockEntity.getMaxProgress();
-                    stack.translate(0.0F, 0.563F * progress, 0.0F);
-                    drawShape(stack, builder, plate, (double)blockpos.getX() - d0, (double)blockpos.getY() - d1, (double)blockpos.getZ() - d2, 0.0F, 0.0F, 0.0F, 0.4F);
-                    stack.popPose();
-                }
-            }
-        }
-
+        EventManager.mod(ModelEvent.BakingCompleted.class).process(event -> {
+            AdvancedReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(Replication.MOD_ID, "block/replicator_plate"), event.getModelBakery());
+        }).subscribe();
+//        EventManager.forge(RenderHighlightEvent.Block.class).process(ClientEvents::blockOverlayEvent).subscribe();
     }
 
     private static void drawShape(PoseStack matrixStackIn, VertexConsumer bufferIn, VoxelShape shapeIn, double xIn, double yIn, double zIn, float red, float green, float blue, float alpha) {
@@ -162,15 +112,44 @@ public class ClientEvents {
         });
     }
 
-    @SubscribeEvent
-    public static void onModelBake(ModelEvent.ModifyBakingResult event) {
-
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath("replication_addon_tiers", "block/replicator_plate");
-
-        BakedModel plate = event.getModels().get(id);
-
-        ReplicatorAdvancedRenderer.PLATE = plate;
+    private static BakedModel bakeModel(ResourceLocation model, ModelBakery modelBakery){
+        var modelResourceLocation = new ModelResourceLocation(model, "standalone");
+        UnbakedModel unbakedModel = modelBakery.getModel(model);
+        ModelBaker baker = modelBakery.new ModelBakerImpl((modelLoc, material) -> material.sprite(), modelResourceLocation);
+        return unbakedModel.bake(baker, Material::sprite, new SimpleModelState(Transformation.identity()));
     }
 
+//    public static void blockOverlayEvent(RenderHighlightEvent.Block event) {
+//        if (event.getTarget() != null) {
+//            BlockHitResult traceResult = event.getTarget();
+//            BlockState og = Minecraft.getInstance().level.getBlockState(traceResult.getBlockPos());
+//            if (og.getBlock() instanceof AdvancedReplicatorBlock advancedReplicatorBlock && Minecraft.getInstance().level.getBlockEntity(traceResult.getBlockPos()) instanceof AdvancedReplicatorBlockEntity advancedReplicatorBlockEntity) {
+//                VoxelShape body = advancedReplicatorBlock.getShapePlate(og).getFirst();
+//                VoxelShape plate = advancedReplicatorBlock.getShapePlate(og).getSecond();
+//                BlockPos blockpos = event.getTarget().getBlockPos();
+//                event.setCanceled(true);
+//
+//                PoseStack stack = new PoseStack();
+//                stack.pushPose();
+//                Camera info = event.getCamera();
+//                //stack.mulPose(Axis.XP.rotationDegrees(info.getXRot()));
+//                //stack.mulPose(Axis.YP.rotationDegrees(info.getYRot() + 180));
+//                double d0 = info.getPosition().x();
+//                double d1 = info.getPosition().y();
+//                double d2 = info.getPosition().z();
+//                VertexConsumer builder = event.getMultiBufferSource().getBuffer(RenderType.LINES);
+//                drawShape(stack, builder, body, blockpos.getX() - d0, blockpos.getY() - d1, blockpos.getZ() - d2, 0, 0, 0, 0.4F);
+//                stack.translate(0 , -AdvancedReplicatorBlockEntity.LOWER_PROGRESS,0);
+//
+//                var progress = (AdvancedReplicatorBlockEntity.getProgress() /* + event.getPartialTick() /100f*/) / (float) AdvancedReplicatorBlockEntity.getMaxProgress();
+//                //progress = 0;
+//
+//                stack.translate(0, AdvancedReplicatorBlockEntity.LOWER_PROGRESS * progress, 0);
+//                drawShape(stack, builder, plate, blockpos.getX() - d0, blockpos.getY() - d1, blockpos.getZ() - d2, 0, 0, 0, 0.4F);
+//                stack.popPose();
+//
+//            }
+//        }
+//    }
 
 }

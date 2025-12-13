@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "replication_addon_tiers:replicator_advanced"
+          "name": "replication_addon_tiers:advanced_replicator"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "replication_addon_tiers:blocks/replicator_advanced"
+  "random_sequence": "replication_addon_tiers:blocks/advanced_replicator"
 }

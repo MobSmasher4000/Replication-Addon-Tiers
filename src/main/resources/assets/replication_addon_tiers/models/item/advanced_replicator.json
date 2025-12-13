@@ -3,10 +3,10 @@
   "loader": "neoforge:composite",
   "children": {
     "base": {
-      "parent": "replication_addon_tiers:block/replicator_advanced"
+      "parent": "replication_addon_tiers:block/advanced_replicator"
     },
     "plate": {
-      "parent": "replication_addon_tiers:block/replicator_plate"
+      "parent": "replication:block/replicator_plate"
     }
   }
 }

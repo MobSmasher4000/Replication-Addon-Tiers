@@ -16,6 +16,9 @@ import com.hrznstudio.titanium.block.BasicTileBlock;
 import com.hrznstudio.titanium.client.screen.asset.IAssetProvider;
 import com.hrznstudio.titanium.component.IComponentHarness;
 import com.hrznstudio.titanium.component.fluid.FluidTankComponent;
+import org.mob.replication_addon_tiers.Config;
+import org.mob.replication_addon_tiers.component.TankPriorityButtonHelper;
+import org.mob.replication_addon_tiers.component.TankPriorityHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,24 +30,26 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
-import org.mob.replication_addon_tiers.Config;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 
 import java.util.List;
 
-public class MatterTankTier3BlockEntity extends NetworkBlockEntity<MatterTankTier3BlockEntity> implements IMatterTanksSupplier, IMatterTanksConsumer {
+public class MatterTankTier3BlockEntity extends NetworkBlockEntity<MatterTankTier3BlockEntity> implements IMatterTanksSupplier, IMatterTanksConsumer, TankPriorityHolder {
+
     @Save
     private LockableMatterTankBundle<MatterTankTier3BlockEntity> lockableMatterTankBundle;
+    @Save
+    private int tankPriority;
     private IMatterType cachedType = MatterType.EMPTY;
-    private Integer Multiplier = Config.tankTier3;
 
     public MatterTankTier3BlockEntity(BasicTileBlock<MatterTankTier3BlockEntity> base, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
-        super(base, blockEntityType != null ? blockEntityType : ModRegistry.MATTER_TANK_TIER_3_BE.get(), pos, state);
-        MatterTankTier3Component<MatterTankTier3BlockEntity> tank = new MatterTankTier3Component<>("tank", ReplicationConfig.MatterTank.CAPACITY * Multiplier, 78, 28);
+        super(base, blockEntityType != null ? blockEntityType : ModRegistry.MATTER_TANK_TIER_1_BE.get(), pos, state);
+        MatterTankTier3Component<MatterTankTier3BlockEntity> tank = new MatterTankTier3Component<>("tank", ReplicationConfig.MatterTank.CAPACITY * Config.tankTier3, 78, 28);
         tank.setTankAction(FluidTankComponent.Action.BOTH).setOnContentChange(this::onTankContentChange);
         this.lockableMatterTankBundle = new LockableMatterTankBundle<>(this, tank, 78 + 20, 28, false);
         this.addBundle(lockableMatterTankBundle);
         this.addMatterTank(this.lockableMatterTankBundle.getTank());
+        TankPriorityButtonHelper.addPriorityButtons(this, this, 98, 28);
     }
 
     private void onTankContentChange(){
@@ -68,6 +73,27 @@ public class MatterTankTier3BlockEntity extends NetworkBlockEntity<MatterTankTie
     @Override
     public List<? extends IMatterTank> getTanks() {
         return this.getMatterTankComponents();
+    }
+
+    @Override
+    public int getPriority() {
+        return this.tankPriority;
+    }
+
+    @Override
+    public int getTankPriority() {
+        return this.tankPriority;
+    }
+
+    @Override
+    public void setTankPriority(int priority) {
+        int clamped = TankPriorityHolder.super.clampPriority(priority);
+        if (clamped == this.tankPriority) {
+            return;
+        }
+        this.tankPriority = clamped;
+        syncObject(this.tankPriority);
+        markForUpdate();
     }
 
     @NotNull

@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "replication_addon_tiers:block/replicator_advanced",
-		"particle": "replication_addon_tiers:block/replicator_advanced"
+		"1": "replication_addon_tiers:block/advanced_replicator",
+		"particle": "replication_addon_tiers:block/advanced_replicator"
 	},
 	"elements": [
 		{

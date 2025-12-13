@@ -1,6 +1,5 @@
 package org.mob.replication_addon_tiers.client.render;
 
-import com.buuz135.replication.calculation.MatterCompound;
 import com.buuz135.replication.calculation.MatterValue;
 import com.buuz135.replication.calculation.client.ClientReplicationCalculation;
 import com.hrznstudio.titanium.block.RotatableBlock;
@@ -19,15 +18,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
-import org.mob.replication_addon_tiers.block.custom.ReplicatorAdvancedBlockEntity;
+import org.mob.replication_addon_tiers.block.custom.AdvancedReplicatorBlockEntity;
 
-public class ReplicatorAdvancedRenderer implements BlockEntityRenderer<ReplicatorAdvancedBlockEntity> {
+public class AdvancedReplicatorRenderer implements BlockEntityRenderer<AdvancedReplicatorBlockEntity> {
     private static RenderType AREA_TYPE = createRenderType();
 
     public static RenderType createRenderType() {
@@ -46,7 +43,7 @@ public class ReplicatorAdvancedRenderer implements BlockEntityRenderer<Replicato
     public static BakedModel PLATE = null;
 
     @Override
-    public void render(ReplicatorAdvancedBlockEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource,  int combinedLightIn, int combinedOverlayIn) {
+    public void render(AdvancedReplicatorBlockEntity entity, float partialTicks, PoseStack poseStack, MultiBufferSource multiBufferSource, int combinedLightIn, int combinedOverlayIn) {
         var facing = entity.getBlockState().getValue(RotatableBlock.FACING_HORIZONTAL);
         if (facing == Direction.EAST) {
             poseStack.translate(1,0,0);
@@ -84,12 +81,12 @@ public class ReplicatorAdvancedRenderer implements BlockEntityRenderer<Replicato
         renderFaces(poseStack, multiBufferSource, Block.box( 4,0,2,12,4,12).bounds(), 0,-0.2,0, 1,1,1, 0.005f);
 
 
-        poseStack.translate(0 , -ReplicatorAdvancedBlockEntity.LOWER_PROGRESS,0);
+        poseStack.translate(0 , -AdvancedReplicatorBlockEntity.LOWER_PROGRESS,0);
 
         var progress = (entity.getProgress() + partialTicks / 100f) / (float) entity.getMaxProgress();
         //progress = 0;
 
-        poseStack.translate(0, ReplicatorAdvancedBlockEntity.LOWER_PROGRESS * progress - 0.001f, 0);
+        poseStack.translate(0, AdvancedReplicatorBlockEntity.LOWER_PROGRESS * progress - 0.001f, 0);
         Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(poseStack.last(),  multiBufferSource.getBuffer(RenderType.solid()), null, PLATE, 255, 255, 255, combinedLightIn ,combinedOverlayIn);
 
         poseStack.translate(0.5f, 0.56f, 0.45f);

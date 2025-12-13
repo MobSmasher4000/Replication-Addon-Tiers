@@ -4,6 +4,6 @@
     "replication_addon_tiers:matter_tank_tier_2",
     "replication_addon_tiers:matter_tank_tier_3",
     "replication_addon_tiers:matter_tank_tier_4",
-    "replication_addon_tiers:replicator_advanced"
+    "replication_addon_tiers:advanced_replicator"
   ]
 }

@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.mob.replication_addon_tiers.Config;
 import org.mob.replication_addon_tiers.ReplicationAddonTiers;
-import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier1BlockEntity;
 import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier2BlockEntity;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
