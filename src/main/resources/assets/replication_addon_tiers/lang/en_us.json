@@ -5,9 +5,7 @@
   "block.replication_addon_tiers.matter_tank_tier_3": "Matter Tank Tier 3",
   "block.replication_addon_tiers.matter_tank_tier_4": "Matter Tank Tier 4",
   "block.replication_addon_tiers.advanced_replicator": "Advanced Replicator",
-  "tooltip.replication_addon_tiers.advanced_replicator_1": "Does Every replication task in ",
-  "tooltip.replication_addon_tiers.advanced_replicator_2": " ticks Instead of ",
-  "tooltip.replication_addon_tiers.advanced_replicator_3": " ticks in normal Replicator",
+  "tooltip.replication_addon_tiers.advanced_replicator": "Does Every replication task in %s ticks Instead of %s ticks in normal Replicator",
   "tooltip.replication_addon_tiers.priority.current": "Priority: %s",
   "tooltip.replication_addon_tiers.priority.increase": "Increase tank priority",
   "tooltip.replication_addon_tiers.priority.decrease": "Decrease tank priority"

@@ -132,10 +132,7 @@ public class AdvancedReplicatorBlock extends RotatableBlock<AdvancedReplicatorBl
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        String tip1 = String.valueOf(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator_1"));
-        String tip2 = String.valueOf(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator_2"));
-        String tip3 = String.valueOf(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator_3"));
-        tooltipComponents.add(Component.literal(tip1 + (Config.advancedReplicator * 2) + tip2 + (ReplicationConfig.Replicator.MAX_PROGRESS * 2) + tip3));
+        tooltipComponents.add(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator" , (Config.advancedReplicator * 2) , (ReplicationConfig.Replicator.MAX_PROGRESS * 2)));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }
