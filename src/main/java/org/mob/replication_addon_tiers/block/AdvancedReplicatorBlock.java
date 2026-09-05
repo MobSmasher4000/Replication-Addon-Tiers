@@ -121,18 +121,19 @@ public class AdvancedReplicatorBlock extends RotatableBlock<AdvancedReplicatorBl
     @Override
     public NonNullList<ItemStack> getDynamicDrops(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         var list = super.getDynamicDrops(state, worldIn, pos, newState, isMoving);
-        if (state.getValue(HAS_MOTOR)) {
-            list.add(new ItemStack(ReplicationRegistry.Items.REPLICATOR_MOTOR));
-        }
-        if (state.getValue(HAS_ENCLOSURE)) {
-            list.add(new ItemStack(ReplicationRegistry.Items.REPLICATOR_ENCLOSURE));
-        }
+//        if (state.getValue(HAS_MOTOR)) {
+//            list.add(new ItemStack(ReplicationRegistry.Items.REPLICATOR_MOTOR));
+//        }
+//        if (state.getValue(HAS_ENCLOSURE)) {
+//            list.add(new ItemStack(ReplicationRegistry.Items.REPLICATOR_ENCLOSURE));
+//        }
         return list;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator" , (Config.advancedReplicator * 2) , (ReplicationConfig.Replicator.MAX_PROGRESS * 2)));
+        tooltipComponents.add(Component.translatable("tooltip.replication_addon_tiers.advanced_replicator_1"));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

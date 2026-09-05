@@ -4,6 +4,7 @@
   "package": "org.mob.replication_addon_tiers.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "MatterNetworkMixin",
     "MatterPipeBlockMixin"
   ],
   "client": [

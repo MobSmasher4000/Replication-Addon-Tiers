@@ -1,0 +1,19 @@
+{
+  "variants": {
+	"subfacing=east": {
+	  "model": "replication_addon_tiers:block/matter_tank_tier_6",
+	  "y": 90
+	},
+	"subfacing=north": {
+	  "model": "replication_addon_tiers:block/matter_tank_tier_6"
+	},
+	"subfacing=south": {
+	  "model": "replication_addon_tiers:block/matter_tank_tier_6",
+	  "y": 180
+	},
+	"subfacing=west": {
+	  "model": "replication_addon_tiers:block/matter_tank_tier_6",
+	  "y": 270
+	}
+  }
+}

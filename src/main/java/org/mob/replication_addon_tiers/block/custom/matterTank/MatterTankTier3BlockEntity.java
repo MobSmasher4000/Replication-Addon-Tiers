@@ -43,7 +43,7 @@ public class MatterTankTier3BlockEntity extends NetworkBlockEntity<MatterTankTie
     private IMatterType cachedType = MatterType.EMPTY;
 
     public MatterTankTier3BlockEntity(BasicTileBlock<MatterTankTier3BlockEntity> base, BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state) {
-        super(base, blockEntityType != null ? blockEntityType : ModRegistry.MATTER_TANK_TIER_1_BE.get(), pos, state);
+        super(base, blockEntityType != null ? blockEntityType : ModRegistry.MATTER_TANK_TIER_3_BE.get(), pos, state);
         MatterTankTier3Component<MatterTankTier3BlockEntity> tank = new MatterTankTier3Component<>("tank", ReplicationConfig.MatterTank.CAPACITY * Config.tankTier3, 78, 28);
         tank.setTankAction(FluidTankComponent.Action.BOTH).setOnContentChange(this::onTankContentChange);
         this.lockableMatterTankBundle = new LockableMatterTankBundle<>(this, tank, 78 + 20, 28, false);

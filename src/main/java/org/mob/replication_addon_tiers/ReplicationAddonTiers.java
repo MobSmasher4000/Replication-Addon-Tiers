@@ -49,56 +49,11 @@ public class ReplicationAddonTiers {
         output.accept(ModRegistry.MATTER_TANK_TIER_2.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_3.get());
         output.accept(ModRegistry.MATTER_TANK_TIER_4.get());
+        output.accept(ModRegistry.MATTER_TANK_TIER_5.get());
+        output.accept(ModRegistry.MATTER_TANK_TIER_6.get());
+        output.accept(ModRegistry.MATTER_TANK_TIER_7.get());
+        output.accept(ModRegistry.MATTER_TANK_TIER_8.get());
         output.accept(ModRegistry.ADVANCED_REPLICATOR.get());
-
-        for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
-            if (!value.equals(MatterType.EMPTY)) {
-                MatterStack matterStack = new MatterStack(value, (double) ReplicationConfig.MatterTank.CAPACITY * Config.tankTier1);
-                CompoundTag tile = new CompoundTag();
-                CompoundTag tank = matterStack.writeToNBT(new CompoundTag());
-                tile.put("tank", tank);
-                ItemStack item = new ItemStack(ModRegistry.MATTER_TANK_TIER_1.get());
-                item.set(ReplicationAttachments.TILE, tile);
-                output.accept(item);
-            }
-        }
-
-        for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
-            if (!value.equals(MatterType.EMPTY)) {
-                MatterStack matterStack = new MatterStack(value, (double) ReplicationConfig.MatterTank.CAPACITY * Config.tankTier2);
-                CompoundTag tile = new CompoundTag();
-                CompoundTag tank = matterStack.writeToNBT(new CompoundTag());
-                tile.put("tank", tank);
-                ItemStack item = new ItemStack(ModRegistry.MATTER_TANK_TIER_2);
-                item.set(ReplicationAttachments.TILE, tile);
-                output.accept(item);
-            }
-        }
-
-        for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
-            if (!value.equals(MatterType.EMPTY)) {
-                MatterStack matterStack = new MatterStack(value, (double) ReplicationConfig.MatterTank.CAPACITY * Config.tankTier3);
-                CompoundTag tile = new CompoundTag();
-                CompoundTag tank = matterStack.writeToNBT(new CompoundTag());
-                tile.put("tank", tank);
-                ItemStack item = new ItemStack(ModRegistry.MATTER_TANK_TIER_3);
-                item.set(ReplicationAttachments.TILE, tile);
-                output.accept(item);
-            }
-        }
-
-        for(IMatterType value : ReplicationRegistry.MATTER_TYPES_REGISTRY.stream().toList()) {
-            if (!value.equals(MatterType.EMPTY)) {
-                MatterStack matterStack = new MatterStack(value, (double) ReplicationConfig.MatterTank.CAPACITY * Config.tankTier4);
-                CompoundTag tile = new CompoundTag();
-                CompoundTag tank = matterStack.writeToNBT(new CompoundTag());
-                tile.put("tank", tank);
-                ItemStack item = new ItemStack(ModRegistry.MATTER_TANK_TIER_4);
-                item.set(ReplicationAttachments.TILE, tile);
-                output.accept(item);
-            }
-        }
-
 
     }).build());
 
@@ -168,6 +123,41 @@ public class ReplicationAddonTiers {
                 (object, context) -> object.getFluidHandler(context)
         );
 
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_5_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_5_BE.get(),
+                (object, context) -> object.getFluidHandler(context)
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_6_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_6_BE.get(),
+                (object, context) -> object.getFluidHandler(context)
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_7_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_7_BE.get(),
+                (object, context) -> object.getFluidHandler(context)
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_8_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.FluidHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_8_BE.get(),
+                (object, context) -> object.getFluidHandler(context)
+        );
 
     }
 }

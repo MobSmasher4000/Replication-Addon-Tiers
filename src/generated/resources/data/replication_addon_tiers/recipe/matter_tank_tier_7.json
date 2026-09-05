@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "c:glass_blocks"
+    },
+    "R": {
+      "item": "replication:replica_ingot"
+    },
+    "T": {
+      "item": "replication_addon_tiers:matter_tank_tier_6"
+    }
+  },
+  "pattern": [
+    "RGR",
+    "GTG",
+    "RGR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "replication_addon_tiers:matter_tank_tier_7"
+  }
+}

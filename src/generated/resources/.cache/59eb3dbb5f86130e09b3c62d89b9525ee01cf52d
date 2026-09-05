@@ -1,6 +1,10 @@
-// 1.21.1	2025-12-13T16:15:29.3559725	Loot Tables
+// 1.21.1	2026-09-05T12:42:04.6104711	Loot Tables
 3baec5d8d86f4b76223f82cb70624c771420b1ac data/replication_addon_tiers/loot_table/blocks/advanced_replicator.json
 640378238ed18e6865538482b2d040bd9738e057 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_1.json
 fdb73306b1cedff4841f60f9673754152c4837b1 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_2.json
 87880da20b2b46d9ce419bb55d3330dd08581666 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_3.json
 e275708a1f8694104e04a4e56755a351dfa6807d data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_4.json
+f7cc9901eba43a77c1ac42c2437c6a42afb1ac6c data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_5.json
+03707ef047beb27feed2867fd9ca3ebba63cd048 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_6.json
+e47f0a65b1f94b63e3fa48fa389116c2695e4852 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_7.json
+46bd40c577bdabe019fa44a04a76d825cf6ed3aa data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_8.json

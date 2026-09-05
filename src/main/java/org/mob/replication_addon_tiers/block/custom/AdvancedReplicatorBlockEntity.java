@@ -6,6 +6,7 @@ import com.buuz135.replication.api.task.IReplicationTask;
 import com.buuz135.replication.api.task.ReplicationTask;
 import com.buuz135.replication.block.tile.ReplicationMachine;
 import com.buuz135.replication.calculation.ReplicationCalculation;
+import com.buuz135.replication.network.MatterNetwork;
 import com.hrznstudio.titanium.annotation.Save;
 import com.hrznstudio.titanium.api.IFactory;
 import com.hrznstudio.titanium.api.client.AssetTypes;
@@ -45,9 +46,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.mob.replication_addon_tiers.Config;
-import org.mob.replication_addon_tiers.block.AdvancedReplicatorBlock;
 import org.mob.replication_addon_tiers.client.gui.addon.AdvancedReplicatorCraftingAddon;
-import org.mob.replication_addon_tiers.client.gui.addon.AdvancedReplicatorMotorAddon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +74,6 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
     private RedstoneControlButtonComponent<RedstoneAction> redstoneButton;
     @Save
     private ItemStackFilter infiniteCrafting;
-    private boolean hasEnclosure;
-    private boolean hasMotor;
-    @Save
-    private int motorSpeedMultiplier;
     @Save
     private boolean isCurrentTaskAFailure;
 
@@ -87,9 +82,6 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
         super(base, blockEntityType, pos, state);
         this.progress = ReplicationConfig.Replicator.MAX_PROGRESS;
         this.action = 1;
-        this.hasEnclosure = false;
-        this.hasMotor = false;
-        this.motorSpeedMultiplier = 100;
         this.isCurrentTaskAFailure = false;
         this.craftingStack = ItemStack.EMPTY;
         this.progressBarComponent = new ProgressBarComponent<AdvancedReplicatorBlockEntity>(26, 25, 0, Config.advancedReplicator * 2)
@@ -143,7 +135,7 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
     public void initClient() {
         super.initClient();
         addGuiAddonFactory(() -> new AdvancedReplicatorCraftingAddon(50, 30, this));
-        addGuiAddonFactory(() -> new AdvancedReplicatorMotorAddon(this, 7, 184));
+//        addGuiAddonFactory(() -> new AdvancedReplicatorMotorAddon(this, 7, 184));
     }
 
     @Override
@@ -151,14 +143,6 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
         super.serverTick(level, pos, state, blockEntity);
         if (this.level.getGameTime() % 20 == 0) {
             var maxProgress = Config.advancedReplicator * 2;
-            this.hasEnclosure = state.getValue(AdvancedReplicatorBlock.HAS_ENCLOSURE);
-            this.hasMotor = state.getValue(AdvancedReplicatorBlock.HAS_MOTOR);
-            if (this.hasEnclosure) {
-                maxProgress *= ReplicationConfig.Replicator.ENCLOSURE_SPEED_MULTIPLIER;
-            }
-            if (this.hasMotor) {
-                maxProgress *= (this.motorSpeedMultiplier / 100D);
-            }
             this.progressBarComponent.setMaxProgress(maxProgress);
             if (this.progress > this.getMaxProgress()) {
                 this.progress = this.getMaxProgress();
@@ -322,51 +306,16 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
 
     public int getPowerConsumption() {
         var power = ReplicationConfig.Replicator.POWER_TICK;
-        if (this.hasEnclosure) power = (int) Math.ceil(power * ReplicationConfig.Replicator.ENCLOSURE_POWER_MULTIPLIER);
         return power;
-    }
-
-    public boolean hasMotor() {
-        return hasMotor;
-    }
-
-    public boolean hasEnclosure() {
-        return hasEnclosure;
-    }
-
-    public int getMotorSpeedMultiplier() {
-        return motorSpeedMultiplier;
     }
 
     @Override
     public void handleButtonMessage(int id, Player playerEntity, CompoundTag compound) {
         super.handleButtonMessage(id, playerEntity, compound);
-        if (id == 124578) {
-            motorSpeedMultiplier = compound.getInt("Multiplier");
-            if (motorSpeedMultiplier > 100) {
-                motorSpeedMultiplier = 100;
-            }
-            if (motorSpeedMultiplier < 20) {
-                motorSpeedMultiplier = 20;
-            }
-            syncObject(motorSpeedMultiplier);
-        }
     }
 
     public int getFailureChance() {
-        int value = getMotorSpeedMultiplier();
-        int oldMin = 20;
-        int oldMax = 100;
-        int newMin = 0;
-        int newMax = 50;
-
-        // Clamp value within [20, 100] to avoid unexpected output
-        if (value < oldMin) value = oldMin;
-        if (value > oldMax) value = oldMax;
-
-        // Inverted scale: 100 → 0, 20 → 50
-        int scaled = (int) Math.floor((oldMax - value) * (newMax - newMin) / (double) (oldMax - oldMin) + newMin);
-        return scaled;
+        return 0;
     }
 
     public boolean isCurrentTaskAFailure() {

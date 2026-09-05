@@ -2,39 +2,28 @@ package org.mob.replication_addon_tiers.client;
 
 import com.buuz135.replication.Replication;
 import com.buuz135.replication.ReplicationAttachments;
+import com.buuz135.replication.ReplicationConfig;
 import com.buuz135.replication.api.matter_fluid.MatterStack;
 import com.hrznstudio.titanium.event.handler.EventManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Transformation;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.*;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.model.SimpleModelState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.joml.Matrix4f;
 import org.mob.replication_addon_tiers.Config;
-import org.mob.replication_addon_tiers.block.AdvancedReplicatorBlock;
 import org.mob.replication_addon_tiers.block.custom.AdvancedReplicatorBlockEntity;
-import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier1BlockEntity;
-import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier2BlockEntity;
-import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier3BlockEntity;
-import org.mob.replication_addon_tiers.block.custom.matterTank.MatterTankTier4BlockEntity;
+import org.mob.replication_addon_tiers.block.custom.matterTank.*;
 import org.mob.replication_addon_tiers.client.render.*;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 
@@ -43,45 +32,111 @@ import java.text.DecimalFormat;
 public class ClientEvents {
 
     public static void init() {
+        final int ORIGINAL_CAPACITY = ReplicationConfig.MatterTank.CAPACITY;
         EventManager.forge(ItemTooltipEvent.class).process(pre -> {
             if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_1.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
                 var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
-                var capacity = 256000 * Config.tankTier1;
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier1;
                 var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
                 pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
                 pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_1.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier1;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
             }
         }).subscribe();
 
         EventManager.forge(ItemTooltipEvent.class).process(pre -> {
             if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_2.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
                 var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
-                var capacity = 256000 * Config.tankTier2;
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier2;
                 var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
                 pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
                 pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_2.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier2;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
             }
         }).subscribe();
 
         EventManager.forge(ItemTooltipEvent.class).process(pre -> {
             if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_3.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
                 var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
-                var capacity = 256000 * Config.tankTier3;
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier3;
                 var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
                 pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
                 pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_3.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier3;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
             }
         }).subscribe();
 
         EventManager.forge(ItemTooltipEvent.class).process(pre -> {
             if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_4.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
                 var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
-                var capacity = 256000 * Config.tankTier4;
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier4;
                 var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
                 pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
                 pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_4.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier4;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
             }
         }).subscribe();
+
+        EventManager.forge(ItemTooltipEvent.class).process(pre -> {
+            if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_5.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
+                var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier5;
+                var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
+                pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
+                pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_5.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier5;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
+            }
+        }).subscribe();
+
+        EventManager.forge(ItemTooltipEvent.class).process(pre -> {
+            if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_6.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
+                var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier6;
+                var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
+                pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
+                pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_6.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier6;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
+            }
+        }).subscribe();
+
+        EventManager.forge(ItemTooltipEvent.class).process(pre -> {
+            if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_7.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
+                var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier7;
+                var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
+                pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
+                pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_7.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier7;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
+            }
+        }).subscribe();
+
+        EventManager.forge(ItemTooltipEvent.class).process(pre -> {
+            if (ItemStack.isSameItem(pre.getItemStack(), new ItemStack(ModRegistry.MATTER_TANK_TIER_8.get())) && pre.getItemStack().has(ReplicationAttachments.TILE)) {
+                var tag = pre.getItemStack().get(ReplicationAttachments.TILE);
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier8;
+                var matterStack = MatterStack.loadMatterStackFromNBT(tag.contains("tank") ? tag.getCompound("tank") : tag.getCompound("lockableMatterTankBundle").getCompound("Tank"));
+                pre.getToolTip().add(1, Component.translatable("tooltip.titanium.tank.amount").withStyle(ChatFormatting.GOLD).append(Component.literal(ChatFormatting.WHITE + new DecimalFormat().format(matterStack.getAmount()) + ChatFormatting.GOLD + "/" + ChatFormatting.WHITE + new DecimalFormat().format(capacity))).append(Component.translatable("tooltip.replication.tank.unit").withStyle(ChatFormatting.DARK_AQUA)));
+                pre.getToolTip().add(1, Component.literal(ChatFormatting.GOLD + Component.translatable("tooltip.replication.tank.matter").getString()).append(matterStack.isEmpty() ? Component.translatable("tooltip.titanium.tank.empty").withStyle(ChatFormatting.WHITE) : Component.translatable(matterStack.getTranslationKey())).withStyle(ChatFormatting.WHITE));
+            } else if (ItemStack.isSameItem(pre.getItemStack(),new ItemStack(ModRegistry.MATTER_TANK_TIER_8.get()))){
+                var capacity = ORIGINAL_CAPACITY * Config.tankTier8;
+                pre.getToolTip().add(Component.literal(Component.translatable("tooltip.replication_addon_tiers.capacity").getString() + capacity));
+            }
+        }).subscribe();
+
 
         EventManager.mod(EntityRenderersEvent.RegisterRenderers.class).process(event -> {
             event.registerBlockEntityRenderer((BlockEntityType<? extends AdvancedReplicatorBlockEntity>)ModRegistry.ADVANCED_REPLICATOR_BE.get(), p_173571_ -> new AdvancedReplicatorRenderer());
@@ -89,6 +144,10 @@ public class ClientEvents {
             event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier2BlockEntity>) ModRegistry.MATTER_TANK_TIER_2_BE.get(), MatterTankTier2Renderer::new);
             event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier3BlockEntity>) ModRegistry.MATTER_TANK_TIER_3_BE.get(), MatterTankTier3Renderer::new);
             event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier4BlockEntity>) ModRegistry.MATTER_TANK_TIER_4_BE.get(), MatterTankTier4Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier5BlockEntity>) ModRegistry.MATTER_TANK_TIER_5_BE.get(), MatterTankTier5Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier6BlockEntity>) ModRegistry.MATTER_TANK_TIER_6_BE.get(), MatterTankTier6Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier7BlockEntity>) ModRegistry.MATTER_TANK_TIER_7_BE.get(), MatterTankTier7Renderer::new);
+            event.registerBlockEntityRenderer((BlockEntityType<? extends MatterTankTier8BlockEntity>) ModRegistry.MATTER_TANK_TIER_8_BE.get(), MatterTankTier8Renderer::new);
         }).subscribe();
         EventManager.mod(ModelEvent.BakingCompleted.class).process(event -> {
             AdvancedReplicatorRenderer.PLATE = bakeModel(ResourceLocation.fromNamespaceAndPath(Replication.MOD_ID, "block/replicator_plate"), event.getModelBakery());

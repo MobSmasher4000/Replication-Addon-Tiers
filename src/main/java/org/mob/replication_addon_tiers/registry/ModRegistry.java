@@ -27,6 +27,20 @@ public class ModRegistry {
     public static final DeferredBlock<MatterTankTier4Block> MATTER_TANK_TIER_4 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_4", MatterTankTier4Block::new);
     public static final DeferredItem<BlockItem> MATTER_TANK_TIER_4_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_4);
 
+    public static final DeferredBlock<MatterTankTier5Block> MATTER_TANK_TIER_5 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_5", MatterTankTier5Block::new);
+    public static final DeferredItem<BlockItem> MATTER_TANK_TIER_5_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_5);
+
+    public static final DeferredBlock<MatterTankTier6Block> MATTER_TANK_TIER_6 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_6", MatterTankTier6Block::new);
+    public static final DeferredItem<BlockItem> MATTER_TANK_TIER_6_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_6);
+
+    public static final DeferredBlock<MatterTankTier7Block> MATTER_TANK_TIER_7 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_7", MatterTankTier7Block::new);
+    public static final DeferredItem<BlockItem> MATTER_TANK_TIER_7_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_7);
+
+    public static final DeferredBlock<MatterTankTier8Block> MATTER_TANK_TIER_8 = ReplicationAddonTiers.BLOCKS.register("matter_tank_tier_8", MatterTankTier8Block::new);
+    public static final DeferredItem<BlockItem> MATTER_TANK_TIER_8_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(MATTER_TANK_TIER_8);
+
+
+
     public static final DeferredBlock<AdvancedReplicatorBlock> ADVANCED_REPLICATOR = ReplicationAddonTiers.BLOCKS.register("advanced_replicator", AdvancedReplicatorBlock::new);
     public static final DeferredItem<BlockItem> ADVANCED_REPLICATOR_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(ADVANCED_REPLICATOR);
 
@@ -66,6 +80,43 @@ public class ModRegistry {
                 return type;
             });
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MatterTankTier5BlockEntity>> MATTER_TANK_TIER_5_BE = BLOCK_ENTITIES.register("matter_tank_tier_5",
+            () -> {
+                var type = BlockEntityType.Builder.of(
+                        (pos, state) -> new MatterTankTier5BlockEntity(MATTER_TANK_TIER_5.get(), null, pos, state),
+                        MATTER_TANK_TIER_5.get()
+                ).build(null);
+                return type;
+            });
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MatterTankTier6BlockEntity>> MATTER_TANK_TIER_6_BE = BLOCK_ENTITIES.register("matter_tank_tier_6",
+            () -> {
+                var type = BlockEntityType.Builder.of(
+                        (pos, state) -> new MatterTankTier6BlockEntity(MATTER_TANK_TIER_6.get(), null, pos, state),
+                        MATTER_TANK_TIER_6.get()
+                ).build(null);
+                return type;
+            });
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MatterTankTier7BlockEntity>> MATTER_TANK_TIER_7_BE = BLOCK_ENTITIES.register("matter_tank_tier_7",
+            () -> {
+                var type = BlockEntityType.Builder.of(
+                        (pos, state) -> new MatterTankTier7BlockEntity(MATTER_TANK_TIER_7.get(), null, pos, state),
+                        MATTER_TANK_TIER_7.get()
+                ).build(null);
+                return type;
+            });
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MatterTankTier8BlockEntity>> MATTER_TANK_TIER_8_BE = BLOCK_ENTITIES.register("matter_tank_tier_8",
+            () -> {
+                var type = BlockEntityType.Builder.of(
+                        (pos, state) -> new MatterTankTier8BlockEntity(MATTER_TANK_TIER_8.get(), null, pos, state),
+                        MATTER_TANK_TIER_8.get()
+                ).build(null);
+                return type;
+            });
+
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvancedReplicatorBlockEntity>> ADVANCED_REPLICATOR_BE = BLOCK_ENTITIES.register("advanced_replicator",
             () -> {
                 var type = BlockEntityType.Builder.of(
@@ -74,6 +125,5 @@ public class ModRegistry {
                 ).build(null);
                 return type;
             });
-
 
 }
