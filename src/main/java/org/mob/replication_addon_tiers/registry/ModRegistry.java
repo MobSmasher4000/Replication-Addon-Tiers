@@ -140,20 +140,22 @@ public class ModRegistry {
     // Replicator
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AdvancedReplicatorBlockEntity>> ADVANCED_REPLICATOR_BE = BLOCK_ENTITIES.register("advanced_replicator",
             () -> {
-                var type = BlockEntityType.Builder.of(
-                        (pos, state) -> new AdvancedReplicatorBlockEntity(ADVANCED_REPLICATOR.get(), null, pos, state),
+                BlockEntityType<AdvancedReplicatorBlockEntity>[] typeRef = new BlockEntityType[1];
+                typeRef[0] = BlockEntityType.Builder.of(
+                        (pos, state) -> new AdvancedReplicatorBlockEntity(ADVANCED_REPLICATOR.get(), typeRef[0], pos, state),
                         ADVANCED_REPLICATOR.get()
                 ).build(null);
-                return type;
+                return typeRef[0];
             });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EliteReplicatorBlockEntity>> ELITE_REPLICATOR_BE = BLOCK_ENTITIES.register("elite_replicator",
             () -> {
-                var type = BlockEntityType.Builder.of(
-                        (pos, state) -> new EliteReplicatorBlockEntity(ELITE_REPLICATOR.get(), null, pos, state),
+                BlockEntityType<EliteReplicatorBlockEntity>[] typeRef = new BlockEntityType[1];
+                typeRef[0] = BlockEntityType.Builder.of(
+                        (pos, state) -> new EliteReplicatorBlockEntity(ELITE_REPLICATOR.get(), typeRef[0], pos, state),
                         ELITE_REPLICATOR.get()
                 ).build(null);
-                return type;
+                return typeRef[0];
             });
 
     // Disintegrator

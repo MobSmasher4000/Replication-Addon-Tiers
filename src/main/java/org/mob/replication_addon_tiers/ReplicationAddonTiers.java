@@ -76,6 +76,8 @@ public class ReplicationAddonTiers {
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
+        CommonEvents.init();
+
         EventManager.mod(RegisterCapabilitiesEvent.class).process((event) -> {
             event.registerBlock(Capabilities.EnergyStorage.BLOCK, (level, blockPos, blockState, blockEntity, direction) -> {
                 Block patt0$temp = blockState.getBlock();
@@ -164,6 +166,23 @@ public class ReplicationAddonTiers {
         event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK, ModRegistry.MATTER_TANK_TIER_8_BE.get(),
                 (object, context) -> object.getFluidHandler(context)
+        );
+
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.ADVANCED_DISINTEGRATOR_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.ELITE_DISINTEGRATOR_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.ADVANCED_REPLICATOR_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.ELITE_REPLICATOR_BE.get(),
+                (object, context) -> object.getItemHandler(context)
         );
 
     }
