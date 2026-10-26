@@ -32,6 +32,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -72,7 +73,6 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
     @Save
     private RedstoneManager<RedstoneAction> redstoneManager;
     private RedstoneControlButtonComponent<RedstoneAction> redstoneButton;
-    @Save
     private ItemStackFilter infiniteCrafting;
     @Save
     private boolean isCurrentTaskAFailure;
@@ -102,6 +102,7 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
             @Override
             public void setFilter(int slot, ItemStack stack) {
                 super.setFilter(slot, stack.getItem().getDefaultInstance());
+                AdvancedReplicatorBlockEntity.this.setChanged();
             }
 
             @OnlyIn(Dist.CLIENT)
@@ -314,6 +315,7 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
     @Override
     public void handleButtonMessage(int id, Player playerEntity, CompoundTag compound) {
         super.handleButtonMessage(id, playerEntity, compound);
+        markComponentDirty();
     }
 
     public int getFailureChance() {
@@ -352,6 +354,24 @@ public class AdvancedReplicatorBlockEntity extends ReplicationMachine<AdvancedRe
     public void onNeighborChanged(Block blockIn, BlockPos fromPos) {
         super.onNeighborChanged(blockIn, fromPos);
         redstoneManager.setLastRedstoneState(this.getEnvironmentValue(false, null).isReceivingRedstone());
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.loadAdditional(compound, provider);
+        if (compound.contains("infiniteCrafting")) {
+            this.infiniteCrafting.deserializeNBT(provider, compound.getCompound("infiniteCrafting"));
+        }
+        invalidateCapabilities();
+        if (this.level != null && !this.level.isClientSide()) {
+            markForUpdate();
+        }
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
+        compound.put("infiniteCrafting", infiniteCrafting.serializeNBT(provider));
     }
 
     @Override
