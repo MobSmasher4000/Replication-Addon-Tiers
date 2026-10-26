@@ -1,0 +1,35 @@
+{
+  "itemGroup.replication_addon_tiers": "Replication Tiers Addon",
+
+  "item.replication_addon_tiers.memory_chip_tier_1": "Memory Chip Tier 1",
+  "item.replication_addon_tiers.memory_chip_tier_2": "Memory Chip Tier 2",
+  "item.replication_addon_tiers.memory_chip_tier_3": "Memory Chip Tier 3",
+
+  "block.replication_addon_tiers.matter_tank_tier_1": "Matter Tank Tier 1",
+  "block.replication_addon_tiers.matter_tank_tier_2": "Matter Tank Tier 2",
+  "block.replication_addon_tiers.matter_tank_tier_3": "Matter Tank Tier 3",
+  "block.replication_addon_tiers.matter_tank_tier_4": "Matter Tank Tier 4",
+  "block.replication_addon_tiers.matter_tank_tier_5": "Matter Tank Tier 5",
+  "block.replication_addon_tiers.matter_tank_tier_6": "Matter Tank Tier 6",
+  "block.replication_addon_tiers.matter_tank_tier_7": "Matter Tank Tier 7",
+  "block.replication_addon_tiers.matter_tank_tier_8": "Matter Tank Tier 8",
+  "block.replication_addon_tiers.advanced_replicator": "Advanced Replicator",
+  "block.replication_addon_tiers.elite_replicator": "Elite Replicator",
+
+  "block.replication_addon_tiers.advanced_matter_network_pipe": "Advanced Matter Network Pipe",
+  "block.replication_addon_tiers.elite_matter_network_pipe": "Elite Matter Network Pipe",
+  "block.replication_addon_tiers.ultimate_matter_network_pipe": "Ultimate Matter Network Pipe",
+
+  "block.replication_addon_tiers.advanced_disintegrator": "Advanced Disintegrator",
+  "block.replication_addon_tiers.elite_disintegrator": "Elite Disintegrator",
+
+  "tooltip.replication_addon_tiers.matter_network_pipe": "Have %s transfer rate Instead of %s transfer rate in normal matter network pipes",
+  "tooltip.replication_addon_tiers.replicator": "Does Every replication task in %s ticks Instead of %s ticks in normal Replicator",
+  "tooltip.replication_addon_tiers.disintegrator": "Does Every disintegration task in %s ticks Instead of %s ticks in normal Disintegrator",
+  "tooltip.replication_addon_tiers.priority.current": "Priority: %s",
+  "tooltip.replication_addon_tiers.priority.increase": "Increase tank priority",
+  "tooltip.replication_addon_tiers.priority.decrease": "Decrease tank priority",
+  "tooltip.replication_addon_tiers.advanced_replicator_1": "Currently doesnt support installing motor and enclosure",
+  "tooltip.replication_addon_tiers.capacity": "Capacity : "
+
+}

@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "replication_addon_tiers:matter_tank_tier_8"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glass",
+    "R": "replication:replica_ingot",
+    "T": "replication_addon_tiers:matter_tank_tier_7"
+  },
+  "pattern": [
+    "RGR",
+    "GTG",
+    "RGR"
+  ],
+  "result": {
+    "id": "replication_addon_tiers:matter_tank_tier_8"
+  }
+}

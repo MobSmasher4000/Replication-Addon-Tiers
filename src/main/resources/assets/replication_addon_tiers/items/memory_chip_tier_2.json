@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "replication_addon_tiers:item/memory_chip_tier_2"
+  }
+}

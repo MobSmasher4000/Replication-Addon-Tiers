@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "replication_addon_tiers:elite_replicator"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "replication:replica_ingot",
+    "M": "minecraft:iron_ingot",
+    "P": "minecraft:piston",
+    "R": "replication_addon_tiers:advanced_replicator"
+  },
+  "pattern": [
+    "IP ",
+    "IRM",
+    "III"
+  ],
+  "result": {
+    "id": "replication_addon_tiers:elite_replicator"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "org.mob.replication_addon_tiers.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "MatterNetworkMixin",
+    "MatterPipeBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

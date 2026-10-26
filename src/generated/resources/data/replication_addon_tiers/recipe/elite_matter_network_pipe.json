@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "replication_addon_tiers:elite_matter_network_pipe"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:emerald",
+    "P": "replication_addon_tiers:advanced_matter_network_pipe"
+  },
+  "pattern": [
+    "PPP",
+    "PIP",
+    "PPP"
+  ],
+  "result": {
+    "count": 8,
+    "id": "replication_addon_tiers:elite_matter_network_pipe"
+  }
+}

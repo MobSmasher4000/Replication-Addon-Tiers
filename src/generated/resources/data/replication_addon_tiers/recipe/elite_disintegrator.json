@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "replication_addon_tiers:elite_disintegrator"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "replication_addon_tiers:advanced_disintegrator",
+    "I": "replication:replica_ingot",
+    "T": "replication_addon_tiers:matter_tank_tier_2"
+  },
+  "pattern": [
+    "ITG",
+    "ITG",
+    "III"
+  ],
+  "result": {
+    "id": "replication_addon_tiers:elite_disintegrator"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:registered",
+      "value": "replication_addon_tiers:memory_chip_tier_3"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "replication_addon_tiers:memory_chip_tier_2",
+    "I": "replication:identification_chamber",
+    "R": "replication:replica_ingot"
+  },
+  "pattern": [
+    "CRC",
+    "RIR",
+    "CRC"
+  ],
+  "result": {
+    "id": "replication_addon_tiers:memory_chip_tier_3"
+  }
+}
