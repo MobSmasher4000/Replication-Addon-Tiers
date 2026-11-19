@@ -1,14 +1,22 @@
 package org.mob.replication_addon_tiers.datagen;
 
 import com.buuz135.replication.ReplicationRegistry;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import org.jetbrains.annotations.Nullable;
 import org.mob.replication_addon_tiers.ReplicationAddonTiers;
+import org.mob.replication_addon_tiers.recipe.ChipMergeRecipe;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 
 import java.util.concurrent.CompletableFuture;
@@ -154,7 +162,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', ReplicationRegistry.Items.REPLICA_INGOT.get())
                 .define('I', ReplicationRegistry.Blocks.IDENTIFICATION_CHAMBER.block().get())
                 .unlockedBy(getHasName(ReplicationRegistry.Items.MEMORY_CHIP.get()), has(ReplicationRegistry.Items.MEMORY_CHIP.get()))
-                .save(recipeOutput);
+                .save(chipMerge(recipeOutput));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.MEMORY_CHIP_TIER_2.get())
                 .pattern("CRC")
@@ -164,7 +172,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', ReplicationRegistry.Items.REPLICA_INGOT.get())
                 .define('I', ReplicationRegistry.Blocks.IDENTIFICATION_CHAMBER.block().get())
                 .unlockedBy(getHasName(ReplicationRegistry.Items.MEMORY_CHIP.get()), has(ReplicationRegistry.Items.MEMORY_CHIP.get()))
-                .save(recipeOutput);
+                .save(chipMerge(recipeOutput));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.MEMORY_CHIP_TIER_3.get())
                 .pattern("CRC")
@@ -174,7 +182,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', ReplicationRegistry.Items.REPLICA_INGOT.get())
                 .define('I', ReplicationRegistry.Blocks.IDENTIFICATION_CHAMBER.block().get())
                 .unlockedBy(getHasName(ReplicationRegistry.Items.MEMORY_CHIP.get()), has(ReplicationRegistry.Items.MEMORY_CHIP.get()))
-                .save(recipeOutput);
+                .save(chipMerge(recipeOutput));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.ADVANCED_MATTER_NETWORK_PIPE.get(), 8)
                 .pattern("PPP")
@@ -203,6 +211,21 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ReplicationRegistry.Blocks.MATTER_NETWORK_PIPE.block().get()), has(ReplicationRegistry.Blocks.MATTER_NETWORK_PIPE.block().get()))
                 .save(recipeOutput);
 
+    }
+
+    // Turns the shaped recipes into chip_merge recipes, which keep the patterns of the chips used.
+    private static RecipeOutput chipMerge(RecipeOutput output) {
+        return new RecipeOutput() {
+            @Override
+            public Advancement.Builder advancement() {
+                return output.advancement();
+            }
+
+            @Override
+            public void accept(ResourceLocation id, Recipe<?> recipe, @Nullable AdvancementHolder advancement, ICondition... conditions) {
+                output.accept(id, new ChipMergeRecipe((ShapedRecipe) recipe), advancement, conditions);
+            }
+        };
     }
 
 }

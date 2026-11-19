@@ -24,6 +24,7 @@ import org.mob.replication_addon_tiers.block.custom.AdvancedMatterPipeBlockEntit
 import org.mob.replication_addon_tiers.block.custom.EliteMatterPipeBlockEntity;
 import org.mob.replication_addon_tiers.block.custom.UltimateMatterPipeBlockEntity;
 import org.mob.replication_addon_tiers.client.ClientEvents;
+import org.mob.replication_addon_tiers.registry.ModRecipes;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 import org.slf4j.Logger;
 
@@ -72,6 +73,7 @@ public class ReplicationAddonTiers {
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         ModRegistry.BLOCK_ENTITIES.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
 
         modEventBus.addListener(this::registerCapabilities);
 
