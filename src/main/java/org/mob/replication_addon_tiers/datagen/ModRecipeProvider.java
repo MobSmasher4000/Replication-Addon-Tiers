@@ -184,6 +184,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ReplicationRegistry.Items.MEMORY_CHIP.get()), has(ReplicationRegistry.Items.MEMORY_CHIP.get()))
                 .save(chipMerge(recipeOutput));
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.PATTERN_TRANSFER_UNIT.get())
+                .pattern("RCR")
+                .pattern("IDI")
+                .pattern("RCR")
+                .define('C', ReplicationRegistry.Items.MEMORY_CHIP.get())
+                .define('R', ReplicationRegistry.Items.REPLICA_INGOT.get())
+                .define('I', ReplicationRegistry.Blocks.IDENTIFICATION_CHAMBER.block().get())
+                .define('D', Items.DIAMOND)
+                .unlockedBy(getHasName(ReplicationRegistry.Items.MEMORY_CHIP.get()), has(ReplicationRegistry.Items.MEMORY_CHIP.get()))
+                .save(recipeOutput);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModRegistry.ADVANCED_MATTER_NETWORK_PIPE.get(), 8)
                 .pattern("PPP")
                 .pattern("PIP")
