@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "replication_addon_tiers:chip_merge",
   "category": "misc",
   "key": {
     "C": {

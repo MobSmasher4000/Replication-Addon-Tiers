@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "replication_addon_tiers:block/pattern_transfer_unit_front",
+    "side": "replication_addon_tiers:block/pattern_transfer_unit_side",
+    "top": "replication_addon_tiers:block/pattern_transfer_unit_top",
+    "particle": "replication_addon_tiers:block/pattern_transfer_unit_side"
+  }
+}

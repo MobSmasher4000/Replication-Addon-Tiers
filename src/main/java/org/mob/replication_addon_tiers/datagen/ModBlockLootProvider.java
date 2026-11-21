@@ -33,6 +33,7 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
         dropSelf(ModRegistry.ADVANCED_MATTER_NETWORK_PIPE.get());
         dropSelf(ModRegistry.ELITE_MATTER_NETWORK_PIPE.get());
         dropSelf(ModRegistry.ULTIMATE_MATTER_NETWORK_PIPE.get());
+        dropSelf(ModRegistry.PATTERN_TRANSFER_UNIT.get());
 
     }
 

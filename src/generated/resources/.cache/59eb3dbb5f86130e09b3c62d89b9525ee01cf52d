@@ -1,4 +1,4 @@
-// 1.21.1	2026-09-29T15:05:56.5124175	Loot Tables
+// 1.21.1	2026-11-19T22:27:12.995769357	Loot Tables
 2104f95b45f9181a71edf58cf8bc98c252add4e0 data/replication_addon_tiers/loot_table/blocks/advanced_disintegrator.json
 f66bdce70229cff3191d8fca31638adace109df3 data/replication_addon_tiers/loot_table/blocks/advanced_matter_network_pipe.json
 3baec5d8d86f4b76223f82cb70624c771420b1ac data/replication_addon_tiers/loot_table/blocks/advanced_replicator.json
@@ -13,4 +13,5 @@ f7cc9901eba43a77c1ac42c2437c6a42afb1ac6c data/replication_addon_tiers/loot_table
 03707ef047beb27feed2867fd9ca3ebba63cd048 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_6.json
 e47f0a65b1f94b63e3fa48fa389116c2695e4852 data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_7.json
 46bd40c577bdabe019fa44a04a76d825cf6ed3aa data/replication_addon_tiers/loot_table/blocks/matter_tank_tier_8.json
+8236e846334206f872839946ec78103c885acc13 data/replication_addon_tiers/loot_table/blocks/pattern_transfer_unit.json
 5a67fe0c842d016886a194f714564036876b18ab data/replication_addon_tiers/loot_table/blocks/ultimate_matter_network_pipe.json

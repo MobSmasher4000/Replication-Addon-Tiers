@@ -24,6 +24,7 @@ import org.mob.replication_addon_tiers.block.custom.AdvancedMatterPipeBlockEntit
 import org.mob.replication_addon_tiers.block.custom.EliteMatterPipeBlockEntity;
 import org.mob.replication_addon_tiers.block.custom.UltimateMatterPipeBlockEntity;
 import org.mob.replication_addon_tiers.client.ClientEvents;
+import org.mob.replication_addon_tiers.registry.ModRecipes;
 import org.mob.replication_addon_tiers.registry.ModRegistry;
 import org.slf4j.Logger;
 
@@ -61,6 +62,7 @@ public class ReplicationAddonTiers {
         output.accept(ModRegistry.ADVANCED_MATTER_NETWORK_PIPE.get());
         output.accept(ModRegistry.ELITE_MATTER_NETWORK_PIPE.get());
         output.accept(ModRegistry.ULTIMATE_MATTER_NETWORK_PIPE.get());
+        output.accept(ModRegistry.PATTERN_TRANSFER_UNIT.get());
 
 
     }).build());
@@ -72,6 +74,7 @@ public class ReplicationAddonTiers {
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         ModRegistry.BLOCK_ENTITIES.register(modEventBus);
+        ModRecipes.SERIALIZERS.register(modEventBus);
 
         modEventBus.addListener(this::registerCapabilities);
 
@@ -113,7 +116,7 @@ public class ReplicationAddonTiers {
                 }
 
                 return null;
-            }, ModRegistry.ADVANCED_REPLICATOR.get(),ModRegistry.ELITE_REPLICATOR.get(),ModRegistry.ADVANCED_DISINTEGRATOR.get(),ModRegistry.ELITE_DISINTEGRATOR.get());
+            }, ModRegistry.ADVANCED_REPLICATOR.get(),ModRegistry.ELITE_REPLICATOR.get(),ModRegistry.ADVANCED_DISINTEGRATOR.get(),ModRegistry.ELITE_DISINTEGRATOR.get(),ModRegistry.PATTERN_TRANSFER_UNIT.get());
         }).subscribe();
 
 
@@ -210,6 +213,10 @@ public class ReplicationAddonTiers {
         );
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK, ModRegistry.ELITE_REPLICATOR_BE.get(),
+                (object, context) -> object.getItemHandler(context)
+        );
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK, ModRegistry.PATTERN_TRANSFER_UNIT_BE.get(),
                 (object, context) -> object.getItemHandler(context)
         );
 

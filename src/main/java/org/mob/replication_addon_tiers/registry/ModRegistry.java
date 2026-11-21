@@ -61,6 +61,9 @@ public class ModRegistry {
     public static final DeferredBlock<AdvancedDisintegratorBlock> ADVANCED_DISINTEGRATOR = ReplicationAddonTiers.BLOCKS.register("advanced_disintegrator", AdvancedDisintegratorBlock::new);
     public static final DeferredItem<BlockItem> ADVANCED_DISINTEGRATOR_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(ADVANCED_DISINTEGRATOR);
 
+    public static final DeferredBlock<PatternTransferUnitBlock> PATTERN_TRANSFER_UNIT = ReplicationAddonTiers.BLOCKS.register("pattern_transfer_unit", PatternTransferUnitBlock::new);
+    public static final DeferredItem<BlockItem> PATTERN_TRANSFER_UNIT_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(PATTERN_TRANSFER_UNIT);
+
     public static final DeferredBlock<EliteDisintegratorBlock> ELITE_DISINTEGRATOR = ReplicationAddonTiers.BLOCKS.register("elite_disintegrator", EliteDisintegratorBlock::new);
     public static final DeferredItem<BlockItem> ELITE_DISINTEGRATOR_ITEM = ReplicationAddonTiers.ITEMS.registerSimpleBlockItem(ELITE_DISINTEGRATOR);
 
@@ -217,5 +220,15 @@ public class ModRegistry {
                 return type;
             });
 
-
+    // Pattern transfer unit
+    @SuppressWarnings("unchecked")
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PatternTransferUnitBlockEntity>> PATTERN_TRANSFER_UNIT_BE = BLOCK_ENTITIES.register("pattern_transfer_unit",
+            () -> {
+                BlockEntityType<PatternTransferUnitBlockEntity>[] typeRef = new BlockEntityType[1];
+                typeRef[0] = BlockEntityType.Builder.of(
+                        (pos, state) -> new PatternTransferUnitBlockEntity(PATTERN_TRANSFER_UNIT.get(), typeRef[0], pos, state),
+                        PATTERN_TRANSFER_UNIT.get()
+                ).build(null);
+                return typeRef[0];
+            });
 }
