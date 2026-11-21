@@ -12,5 +12,6 @@ public class CommonEvents {
         NBTManager.getInstance().scanTileClassForAnnotations(AdvancedMatterPipeBlockEntity.class);
         NBTManager.getInstance().scanTileClassForAnnotations(EliteMatterPipeBlockEntity.class);
         NBTManager.getInstance().scanTileClassForAnnotations(UltimateMatterPipeBlockEntity.class);
+        NBTManager.getInstance().scanTileClassForAnnotations(PatternTransferUnitBlockEntity.class);
     }
 }

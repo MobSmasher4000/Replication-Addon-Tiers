@@ -24,16 +24,21 @@
   "block.replication_addon_tiers.elite_disintegrator": "Elite Disintegrator",
 
   "block.replication_addon_tiers.pattern_transfer_unit": "Pattern Transfer Unit",
+  "tooltip.replication_addon_tiers.pattern_transfer_unit_modes": "It have 2 modes",
 
   "tooltip.replication_addon_tiers.matter_network_pipe": "Have %s transfer rate Instead of %s transfer rate in normal matter network pipes",
   "tooltip.replication_addon_tiers.replicator": "Does Every replication task in %s ticks Instead of %s ticks in normal Replicator",
   "tooltip.replication_addon_tiers.disintegrator": "Does Every disintegration task in %s ticks Instead of %s ticks in normal Disintegrator",
-  "tooltip.replication_addon_tiers.pattern_transfer_unit": "Transfers the patterns of the left chip to the right chip (the left chip keeps them, all of them must fit), using %s FE and %s ticks per pattern",
   "gui.replication_addon_tiers.pattern_transfer_unit.not_enough_room": "Can't transfer:\nnot enough free slots",
   "tooltip.replication_addon_tiers.priority.current": "Priority: %s",
   "tooltip.replication_addon_tiers.priority.increase": "Increase tank priority",
   "tooltip.replication_addon_tiers.priority.decrease": "Decrease tank priority",
   "tooltip.replication_addon_tiers.advanced_replicator_1": "Currently doesnt support installing motor and enclosure",
-  "tooltip.replication_addon_tiers.capacity": "Capacity : "
+  "tooltip.replication_addon_tiers.capacity": "Capacity : ",
+
+  "gui.replication_addon_tiers.pattern_transfer_unit.mode.copy": "Copy Mode",
+  "gui.replication_addon_tiers.pattern_transfer_unit.mode.copy.tooltip": "Copies the patterns of the left chip to the right chip \n(the left chip keeps them, all of them must fit)",
+  "gui.replication_addon_tiers.pattern_transfer_unit.mode.move": "Move Mode",
+  "gui.replication_addon_tiers.pattern_transfer_unit.mode.move.tooltip": "Transfers the patterns of the left chip to the right chip \n(the left chip looses them)"
 
 }

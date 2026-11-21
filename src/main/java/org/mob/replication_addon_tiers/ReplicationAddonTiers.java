@@ -215,10 +215,6 @@ public class ReplicationAddonTiers {
                 Capabilities.ItemHandler.BLOCK, ModRegistry.ELITE_REPLICATOR_BE.get(),
                 (object, context) -> object.getItemHandler(context)
         );
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK, ModRegistry.PATTERN_TRANSFER_UNIT_BE.get(),
-                (object, context) -> object.getItemHandler(context)
-        );
 
     }
 }
